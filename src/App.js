@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from "react";
+import { data } from "./data";
 
 function App() {
+  const [persons, setPersons] = React.useState(data);
+
+  const totalPersons = persons.length;
+
+  const clear = () => {
+    setPersons([]);
+  };
+
+  const removePerson = (id) => {
+    let newPersons = persons.filter((person) => person.id !== id);
+    setPersons(newPersons);
+    console.log(newPersons);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className="container">
+      <h1>{totalPersons} Birthdays Today</h1>
+      <span>(click image to remove celebrant)</span>
+
+      {persons.map((person) => {
+        return (
+          <div className="celebrant-info" key={person.id}>
+            <img
+              src={person.img}
+              alt="img"
+              onClick={() => removePerson(person.id)}
+            />
+            <div>
+              <h4 className="name">{person.name}</h4>
+              <p className="age">{person.age} years old</p>
+            </div>
+          </div>
+        );
+      })}
+      <button onClick={() => clear()}>Clear All</button>
+    </section>
   );
 }
 
